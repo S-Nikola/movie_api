@@ -65,9 +65,9 @@
 
         <tr>
             <td>Return data about a single movie by title to the user</td>
-            <td>/movies/:title</td>
+            <td>/movies/:Title</td>
             <td>GET</td>
-            <td>:title</td>
+            <td>:Title</td>
             <td>-</td>
             <td>A JSON object holding data about a single movie</td>
         </tr>
@@ -96,26 +96,52 @@
             <td>/users</td>
             <td>POST</td>
             <td>-</td>
-            <td>A JSON object holding data about the added user, structured like this: <br> { "name" : "Vincent", <br> "favoriteMovie" : "movieTitle"}</td>
-            <td>A JSON object holding data about the added user, structured like this; <br> { "name" : "Vincent", <br> "favoriteMovie" : "movieTitle"}</td>
+            <td>A JSON object holding data about the added user, structured like this: <br> {
+                Username: String,
+                (required)
+                Password: String,
+                (required)
+                Email: String,
+                (required)
+                Birthday: Date
+              }</td>
+            <td>A JSON object holding data about the added user, structured like this: <br> {
+                Username: String,
+                (required)
+                Password: String,
+                (required)
+                Email: String,
+                (required)
+                Birthday: Date
+              }</td>
         </tr>
 
         <tr>
             <td>Allow new users to update their user info</td>
-            <td>/users/:id</td>
+            <td>/users/:Username</td>
             <td>PUT</td>
-            <td>:id</td>
-            <td>-</td>
+            <td>:Username</td>
+            <td>A JSON object holding data with the updated information: <br>
+                {
+                Username: String,
+                (required)
+                Password: String,
+                (required)
+                Email: String,
+                (required)
+                Birthday: Date
+                }
+            </td>
             <td>A JSON object holding data about the updated information</td>
         </tr>
         
         <tr>
             <td>Allow users to add a movie to their list of favorites</td>
-            <td>/users/:id/:movieTitle</td>
-            <td>PUT</td>
-            <td>:id/:movieTitle</td>
+            <td>/users/:Username/movies/:MovieID</td>
+            <td>POST</td>
+            <td>:Username/movies/:MovieID</td>
             <td>-</td>
-            <td>A text message indicating whether the movie was added</td>
+            <td>A JSON containing updated information about the user</td>
         </tr>
 
         <tr>
@@ -129,9 +155,9 @@
 
         <tr>
             <td>Allow existing users to deregister</td>
-            <td>/users/:id</td>
+            <td>/users/:Username</td>
             <td>DELETE</td>
-            <td>:id</td>
+            <td>:Username</td>
             <td>-</td>
             <td>A text message indicating whether the user has deregistered</td>
         </tr>
