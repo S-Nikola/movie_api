@@ -21,6 +21,11 @@ app.use(bodyParser.urlencoded({
   }));
 app.use(bodyParser.json());
 
+let auth = require('./auth')(app);
+
+const passport = require('passport');
+require('./passport');
+
 // Setup the logger
 app.use(morgan('combined', {stream: accessLogStream}));
 
@@ -182,19 +187,22 @@ let movies = [
 // Users JSON
 let users = [
   {
-    "id": "1",
     "Username": "Rex",
-    "favoriteMovies": ["Lord of the Rings"]
-},
-  {
-    "id": "2",
-    "Username": "Floki",
-    "favoriteMovies": ["Star Wars"]
+    "Password": "rexi4",
+    "Email": "rex@email.com",
+    "Birthday": "07/02/90"
 },
 {
-  "id": "3",
+  "Username": "Floki",
+  "Password": "floki4",
+  "Email": "test@email.com",
+  "Birthday": "01/04/90"
+},
+{
   "Username": "Mr. Deletable",
-  "favoriteMovies": []
+  "Password": "delete",
+  "Email": "delete@email.com",
+  "Birthday": "01/04/90"
 }
 ];
 
@@ -208,7 +216,7 @@ app.get('/documentation', (req, res) => {
 });
 
 // READ - Return a list of all movies to the user;
-app.get('/movies', (req, res) => {
+app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.find()
       .then((movies) => {
           res.status(201).json(movies);
@@ -220,7 +228,7 @@ app.get('/movies', (req, res) => {
 });
 
 // READ - Return data about a single movie by title to the user;
-app.get('/movies/:Title', (req, res) => {
+app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.findOne({ Title: req.params.Title })
       .then((movie) => {
           res.json(movie);
@@ -233,7 +241,7 @@ app.get('/movies/:Title', (req, res) => {
 
 
 // READ - Return data about a genre (description) by name of genre (e.g., “Thriller”);
-app.get('/movies/genre/:genreName', (req, res) => {
+app.get('/movies/genre/:genreName', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.findOne({ 'Genre.Name': req.params.genreName })
       .then((movie) => {
           res.json(movie.Genre);
@@ -246,7 +254,7 @@ app.get('/movies/genre/:genreName', (req, res) => {
 
 
 // READ - Return data about a director (bio, birth year, etc) by name;
-app.get('/movies/directors/:directorName', (req, res) => {
+app.get('/movies/directors/:directorName', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.findOne({ 'Director.Name': req.params.directorName })
       .then((movie) => {
           res.json(movie.Director);
@@ -355,7 +363,7 @@ Expect JSON in this format
   (required)
   Birthday: Date
 }*/
-app.put('/users/:Username', (req, res) => {
+app.put('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndUpdate({ Username: req.params.Username }, { $set:
     {
       Username: req.body.Username,
@@ -382,7 +390,7 @@ app.post('/users/:Username/movies/:MovieID', (req, res) => {
   Users.findOneAndUpdate({ Username: req.params.Username }, {
      $push: { FavoriteMovies: req.params.MovieID }
    },
-   { new: true }, // This line makes sure that the updated document is returned
+   { new: true },
   (err, updatedUser) => {
     if (err) {
       console.error(err);
@@ -399,7 +407,7 @@ app.delete('/users/:Username/movies/:MovieID', (req, res) => {
   Users.findOneAndUpdate({ Username: req.params.Username }, {
      $pull: { FavoriteMovies: req.params.MovieID }
    },
-   { new: true }, // This line makes sure that the updated document is returned
+   { new: true },
   (err, updatedUser) => {
     if (err) {
       console.error(err);
@@ -445,7 +453,7 @@ app.delete('/users/:Username', (req, res) => {
 // });
 
 
-// ERROR
+/*ERROR*/
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send("Something is not quite right. Give it another try.");
