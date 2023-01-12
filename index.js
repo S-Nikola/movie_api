@@ -12,6 +12,11 @@ const express = require('express');
     bcrypt = require('bcrypt');
 
 // mongoose.connect('mongodb://localhost:27017/BananaFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
+
+
+// The code commented out below did not work and UseNewUrlParser and useUnifiedTopology had to be removed to fix it
+//mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+
 mongoose.connect(process.env.CONNECTION_URI, () => {
   console.log('Mongo connected')
 });
