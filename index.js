@@ -12,7 +12,9 @@ const express = require('express');
     bcrypt = require('bcrypt');
 
 // mongoose.connect('mongodb://localhost:27017/BananaFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
-mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(process.env.CONNECTION_URI, () => {
+  console.log('Mongo connected')
+});
 
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
 
