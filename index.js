@@ -242,7 +242,7 @@ app.get('/documentation', (req, res) => {
 });
 
 // READ - Return a list of all movies to the user;
-app.get('/movies', /*passport.authenticate('jwt', { session: false }),*/ (req, res) => {
+app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.find()
       .then((movies) => {
           res.status(201).json(movies);
@@ -318,11 +318,6 @@ app.get('/movies/directors/:directorName', passport.authenticate('jwt', { sessio
 
 /* CREATE - Allow new users to register;*/
 app.post('/users', 
-// Validation logic here for request
-  //you can either use a chain of methods like .not().isEmpty()
-  //which means "opposite of isEmpty" in plain english "is not empty"
-  //or use .isLength({min: 5}) which means
-  //minimum value of 5 characters are only allowed
   [
     check('Username', 'Username is required').isLength({min: 5}),
     check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
