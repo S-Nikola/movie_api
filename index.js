@@ -291,31 +291,6 @@ app.get('/movies/directors/:directorName', passport.authenticate('jwt', { sessio
       });
 });
 
-
-// Return a list of users
-// app.get('/users', (req, res) => {
-//   Users.find()
-//     .then((users) => {
-//       res.status(201).json(users);
-//     })
-//     .catch((err) => {
-//       console.error(err);
-//       res.status(500).send('Error: ' + err);
-//     });
-// });
-
-// Get a user by username
-// app.get('/users/:Username', (req, res) => {
-//   Users.findOne({ Username: req.params.Username })
-//     .then((user) => {
-//       res.json(user);
-//     })
-//     .catch((err) => {
-//       console.error(err);
-//       res.status(500).send('Error: ' + err);
-//     });
-// });
-
 /* CREATE - Allow new users to register;*/
 app.post('/users', 
   [
@@ -477,22 +452,6 @@ app.delete('/users/:Username', passport.authenticate('jwt', { session: false }),
       res.status(500).send('Error: ' + err);
     });
 });
-
-// DELETE - Remove a movie from the collection
-// app.delete('/movies/:Title', (req, res) => {
-//   Users.findOneAndRemove({ Title: req.params.Title })
-//     .then((user) => {
-//       if (!user) {
-//         res.status(400).send(req.params.Title + ' was not found');
-//       } else {
-//         res.status(200).send(req.params.Title + ' was deleted.');
-//       }
-//     })
-//     .catch((err) => {
-//       console.error(err);
-//       res.status(500).send('Error: ' + err);
-//     });
-// });
 
 
 /*ERROR*/
