@@ -265,6 +265,18 @@ app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), (req
       });
 });
 
+// READ - Return data about the user;
+app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
+  Users.findOne({ Username: req.params.Username })
+      .then((user) => {
+          res.json(user);
+      })
+      .catch((err) => {
+          console.log(err);
+          res.status(500).send('Error: ' + err);
+      });
+});
+
 
 // READ - Return data about a genre (description) by name of genre (e.g., “Thriller”);
 app.get('/movies/genre/:genreName', passport.authenticate('jwt', { session: false }), (req, res) => {
