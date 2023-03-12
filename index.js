@@ -40,7 +40,7 @@ let allowedOrigins = [
   'http://testsite.com', 
   'https://banana-flix.netlify.app', 
   'http://localhost:4200',
-  'https://s-nikola.github.io/BananaFlix-Angular-client/welcome'];
+  'https://s-nikola.github.io'];
 
 app.use(cors({
   origin: (origin, callback) => {
